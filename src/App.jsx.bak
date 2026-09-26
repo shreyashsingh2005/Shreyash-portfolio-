@@ -1,0 +1,1718 @@
+import React, { useEffect, useState, useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { Github, Linkedin, ExternalLink, MapPin, Phone, Terminal, Layers, Database, Briefcase, GraduationCap } from 'lucide-react';
+import './index.css';
+
+// A Spotlight Card component using Framer Motion to track mouse
+const SpotlightCard = ({ children, className = "" }) => {
+  const divRef = useRef(null);
+  const [isFocused, setIsFocused] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = useState(0);
+
+  const handleMouseMove = (e) => {
+    if (!divRef.current || isFocused) return;
+    const rect = divRef.current.getBoundingClientRect();
+    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  const handleFocus = () => setIsFocused(true);
+  const handleBlur = () => setIsFocused(false);
+  const handleMouseEnter = () => setOpacity(1);
+  const handleMouseLeave = () => setOpacity(0);
+
+  return (
+    <motion.div
+      ref={divRef}
+      onMouseMove={handleMouseMove}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className={`spotlight-card ${className}`}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, type: "spring", bounce: 0.2 }}
+    >
+      <div
+        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300"
+        style={{
+          opacity,
+          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(255, 15, 123, 0.4), transparent 40%)`,
+          zIndex: 0,
+        }}
+      />
+      <div className="card-content">{children}</div>
+    </motion.div>
+  );
+};
+
+function App() {
+  const [scrolled, setScrolled] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  // Smooth scroll progress
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Animation variants
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 }
+    }
+  };
+
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 40 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
+  return (
+    <>
+      <div className="tech-grid" />
+      
+      {/* Global Ambient Glow following mouse */}
+      <motion.div 
+        className="fixed top-0 left-0 w-[800px] h-[800px] rounded-full pointer-events-none -z-10"
+        style={{
+          background: 'radial-gradient(circle, rgba(255, 15, 123, 0.05) 0%, rgba(248, 155, 41, 0.02) 30%, transparent 70%)',
+          x: mousePos.x - 400,
+          y: mousePos.y - 400,
+        }}
+        transition={{ type: "tween", ease: "backOut", duration: 0.5 }}
+      />
+
+      {/* Progress Bar */}
+      <motion.div
+        style={{ scaleX, transformOrigin: "0%", zIndex: 1001, background: "linear-gradient(90deg, var(--fire-1), var(--fire-2))" }}
+        className="fixed top-0 left-0 right-0 h-1"
+      />
+
+      {/* Navigation */}
+      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+        <div className="nav-content">
+          <motion.a 
+            href="#" 
+            className="logo"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            SHREYASH.DEV
+          </motion.a>
+          <motion.ul 
+            className="nav-links"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <li><a href="#home">01. Origin</a></li>
+            <li><a href="#about">02. Persona</a></li>
+            <li><a href="#skills">03. Arsenal</a></li>
+            <li><a href="#projects">04. Outputs</a></li>
+            <li><a href="#contact">05. Link</a></li>
+          </motion.ul>
+        </div>
+      </nav>
+
+      <main>
+        {/* HERO SECTION */}
+        <section id="home" className="section" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', paddingTop: '100px' }}>
+          <div className="container">
+            <motion.div 
+              variants={staggerContainer} 
+              initial="hidden" 
+              animate="show"
+            >
+              <motion.div variants={fadeInUp} style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '8px 16px', border: '1px solid var(--border-color)', borderRadius: '30px', fontSize: '0.85rem', marginBottom: '2rem' }}>
+                <span style={{ width: '8px', height: '8px', background: 'var(--fire-2)', borderRadius: '50%', boxShadow: '0 0 10px var(--fire-2)' }}></span> 
+                Available for new ventures
+              </motion.div>
+              
+              <motion.h1 
+                variants={fadeInUp}
+                style={{ fontSize: 'clamp(4rem, 10vw, 7rem)', lineHeight: 1, letterSpacing: '-3px', marginBottom: '1rem' }}
+              >
+                SHREYASH.DEV
+              </motion.h1>
+              
+              <motion.h2 
+                variants={fadeInUp}
+                style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontWeight: 300, marginBottom: '2rem', maxWidth: '800px' }}
+              >
+                Engineering <span className="text-fire" style={{ fontWeight: 600 }}>Unconventional</span> Web Experiences.
+              </motion.h2>
+              
+              <motion.p 
+                variants={fadeInUp}
+                style={{ maxWidth: '600px', fontSize: '1.1rem', marginBottom: '3rem' }}
+              >
+                I am a front-end developer moving away from the ordinary. I combine deep technical logic with avant-garde aesthetics to build applications that refuse to be ignored.
+              </motion.p>
+              
+              <motion.div variants={fadeInUp} style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
+                <motion.a href="#projects" className="btn btn-solid" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  Deploy Projects
+                </motion.a>
+                <motion.a href="#contact" className="btn btn-ghost" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  Establish Comms
+                </motion.a>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ABOUT SECTION */}
+        <section id="about" className="section">
+          <div className="container">
+            <motion.h2 
+              className="section-title"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              Persona<span style={{ color: 'var(--fire-1)' }}>.</span>
+            </motion.h2>
+            
+            <div className="about-grid">
+              <SpotlightCard>
+                <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--text-primary)' }}>The Mindset</h3>
+                <p style={{ marginBottom: '1rem' }}>I am currently a BCA final-year student, heavily focused on front-end architecture. My philosophy is simple: functional is required, but memorable is the goal.</p>
+                <p>I've independently engineered five end-to-end applications, treating each as a blank canvas to master DOM manipulation, API integration, and responsive logic.</p>
+              </SpotlightCard>
+              
+              <SpotlightCard>
+                <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--text-primary)' }}>Academic Core</h3>
+                <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+                  <GraduationCap size={40} color="var(--fire-1)" />
+                  <div>
+                    <h4 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>Bachelor of Computer Applications</h4>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>HI-TECH Institute of Engineering and Technology</p>
+                    <p style={{ color: 'var(--fire-2)', fontWeight: 500, marginTop: '0.5rem' }}>Class of 2026</p>
+                  </div>
+                </div>
+              </SpotlightCard>
+            </div>
+          </div>
+        </section>
+
+        {/* SKILLS SECTION */}
+        <section id="skills" className="section">
+          <div className="container">
+            <motion.h2 
+              className="section-title"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              Arsenal<span style={{ color: 'var(--fire-1)' }}>.</span>
+            </motion.h2>
+            
+            <div className="skills-grid">
+              <SpotlightCard>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '1.3rem', fontFamily: 'var(--font-heading)', color: 'var(--text-primary)', fontWeight: 700, marginBottom: '2rem' }}>
+                  <Terminal color="var(--fire-1)" /> Languages
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                  {['HTML5', 'CSS3', 'JavaScript (ES6+)', 'PHP', 'SQL'].map(skill => (
+                    <span key={skill} style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)', fontSize: '0.9rem' }}>{skill}</span>
+                  ))}
+                </div>
+              </SpotlightCard>
+
+              <SpotlightCard>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '1.3rem', fontFamily: 'var(--font-heading)', color: 'var(--text-primary)', fontWeight: 700, marginBottom: '2rem' }}>
+                  <Layers color="var(--fire-1)" /> Front-End
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                  {['Responsive UI', 'DOM Manipulation', 'AJAX & Fetch API', 'UX Architecture'].map(skill => (
+                    <span key={skill} style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)', fontSize: '0.9rem' }}>{skill}</span>
+                  ))}
+                </div>
+              </SpotlightCard>
+
+              <SpotlightCard>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '1.3rem', fontFamily: 'var(--font-heading)', color: 'var(--text-primary)', fontWeight: 700, marginBottom: '2rem' }}>
+                  <Database color="var(--fire-1)" /> Backend & Ops
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                  {['MySQL', 'Session Handling', 'Git / GitHub', 'RESTful APIs', 'XAMPP'].map(skill => (
+                    <span key={skill} style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)', fontSize: '0.9rem' }}>{skill}</span>
+                  ))}
+                </div>
+              </SpotlightCard>
+            </div>
+          </div>
+        </section>
+
+        {/* PROJECTS SECTION */}
+        <section id="projects" className="section">
+          <div className="container">
+            <motion.h2 
+              className="section-title"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              Outputs<span style={{ color: 'var(--fire-1)' }}>.</span>
+            </motion.h2>
+
+            <div className="projects-list">
+              {[
+                { title: 'Weather Application', type: 'Real-Time Data Integration', desc: 'A visually aggressive real-time weather platform. Built with a lightning-fast city search feature that returns accurate live conditions via third-party APIs.', tech: ['JS', 'CSS', 'API'] },
+                { title: 'Resume Forge Pro', type: 'Dynamic Web Application', desc: 'An interactive resume builder enabling real-time creation and export. Engineered heavy JavaScript DOM manipulation to instantly reflect user edits with zero lag.', tech: ['HTML', 'CSS', 'JS'] },
+                { title: 'Nexus Meet', type: 'Full-Stack Platform', desc: 'A secure online meeting platform for creating and joining rooms via shareable links. Architected session handling and persistent data storage using a PHP/MySQL stack.', tech: ['PHP', 'MySQL', 'JS'] },
+                { title: 'Med 24/7', type: 'Healthcare Application', desc: 'Full-stack healthcare app for booking appointments and securely accessing records. Features rigorous JS-based form validation backed by PHP and MySQL.', tech: ['PHP', 'MySQL', 'JS'] }
+              ].map((project, i) => (
+                <SpotlightCard key={i}>
+                  <div style={{ marginBottom: '1.5rem' }}>
+                    <h3 style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>{project.title}</h3>
+                    <p style={{ color: 'var(--fire-2)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>{project.type}</p>
+                  </div>
+                  <p style={{ flexGrow: 1, marginBottom: '2rem' }}>{project.desc}</p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '1.5rem' }}>
+                    <div style={{ display: 'flex', gap: '1rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                      {project.tech.map(t => <span key={t}>{t}</span>)}
+                    </div>
+                    <motion.a 
+                      href="#" 
+                      style={{ width: '40px', height: '40px', background: 'var(--text-primary)', color: 'var(--bg-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}
+                      whileHover={{ backgroundColor: 'var(--fire-1)', color: '#fff', rotate: -45 }}
+                    >
+                      <ExternalLink size={20} />
+                    </motion.a>
+                  </div>
+                </SpotlightCard>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CONTACT SECTION */}
+        <section id="contact" className="section">
+          <div className="container">
+            <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+              <SpotlightCard>
+                <h2 style={{ fontSize: '3rem', marginBottom: '1.5rem' }}>Initiate Contact</h2>
+                <p style={{ fontSize: '1.1rem', marginBottom: '3rem' }}>Seeking an entry-level Web Developer role to apply strong debugging and problem-solving skills to real-world products. Let's break the mold together.</p>
+                
+                <motion.a 
+                  href="mailto:shreyashsingh0717@gmail.com" 
+                  className="btn btn-solid btn-large"
+                  whileHover={{ scale: 1.05 }} 
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Send Transmission
+                </motion.a>
+
+                <div style={{ marginTop: '3rem', display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><MapPin size={18} /> Ghaziabad, India</span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Phone size={18} /> +91 8810364205</span>
+                </div>
+                
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', fontSize: '1.5rem', marginTop: '2rem' }}>
+                  <motion.a href="https://github.com/shreyashsingh2005" target="_blank" whileHover={{ y: -5, color: 'var(--fire-1)' }}>
+                    <Github />
+                  </motion.a>
+                  <motion.a href="https://linkedin.com/in/shreyash-singh" target="_blank" whileHover={{ y: -5, color: 'var(--fire-1)' }}>
+                    <Linkedin />
+                  </motion.a>
+                </div>
+              </SpotlightCard>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer style={{ borderTop: '1px solid var(--border-color)', padding: '3rem 0' }}>
+        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div className="logo" style={{ fontSize: '1.5rem' }}>SHREYASH.DEV</div>
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>&copy; 2026 Shreyash Singh. Developed with precision.</p>
+        </div>
+      </footer>
+    </>
+  );
+}
+
+export default App;
+
+import React, { useEffect, useState, useRef } from 'react';
+import { motion, useScroll, useSpring, useMotionValue } from 'framer-motion';
+import { ExternalLink, MapPin, Phone, Terminal, Layers, Database, GraduationCap } from 'lucide-react';
+import './index.css';
+
+/* ==============================================
+   ADVANCED FRAMER MOTION COMPONENTS
+   ============================================== */
+
+// 1. Smooth Trailing Cursor with Blend Mode (Inverts colors behind it)
+const CustomCursor = () => {
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
+  
+  const springConfig = { damping: 25, stiffness: 200, mass: 0.5 };
+  const smoothX = useSpring(cursorX, springConfig);
+  const smoothY = useSpring(cursorY, springConfig);
+
+  useEffect(() => {
+    const moveCursor = (e) => {
+      cursorX.set(e.clientX - 16);
+      cursorY.set(e.clientY - 16);
+    };
+    window.addEventListener('mousemove', moveCursor);
+    return () => window.removeEventListener('mousemove', moveCursor);
+  }, []);
+
+  return (
+    <motion.div
+      className="custom-cursor pointer-events-none fixed z-[9999] rounded-full bg-white mix-blend-difference"
+      style={{
+        width: 32,
+        height: 32,
+        x: smoothX,
+        y: smoothY,
+        pointerEvents: "none",
+        zIndex: 9999,
+        position: "fixed",
+        top: 0,
+        left: 0,
+        mixBlendMode: "difference",
+        backgroundColor: "white",
+        borderRadius: "50%"
+      }}
+    />
+  );
+};
+
+// 2. Magnetic Interaction Wrapper (Pulls elements towards mouse)
+const Magnetic = ({ children }) => {
+  const ref = useRef(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouse = (e) => {
+    const { clientX, clientY } = e;
+    const { height, width, left, top } = ref.current.getBoundingClientRect();
+    const middleX = clientX - (left + width / 2);
+    const middleY = clientY - (top + height / 2);
+    setPosition({ x: middleX, y: middleY });
+  };
+
+  const reset = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
+  const { x, y } = position;
+  return (
+    <motion.div
+      style={{ display: "inline-block", position: "relative" }}
+      ref={ref}
+      onMouseMove={handleMouse}
+      onMouseLeave={reset}
+      animate={{ x: x * 0.2, y: y * 0.2 }}
+      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+// 3. Spotlight Hover Card
+const SpotlightCard = ({ children, className = "" }) => {
+  const divRef = useRef(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = useState(0);
+
+  const handleMouseMove = (e) => {
+    if (!divRef.current) return;
+    const rect = divRef.current.getBoundingClientRect();
+    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  return (
+    <motion.div
+      ref={divRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setOpacity(1)}
+      onMouseLeave={() => setOpacity(0)}
+      className={`spotlight-card ${className}`}
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
+    >
+      <div
+        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300"
+        style={{
+          opacity,
+          background: `radial-gradient(800px circle at ${position.x}px ${position.y}px, rgba(255, 15, 123, 0.4), transparent 40%)`,
+          zIndex: 0,
+        }}
+      />
+      <div className="card-content">{children}</div>
+    </motion.div>
+  );
+};
+
+// 4. Character-by-Character Stagger Text Reveal
+const AnimatedTitle = ({ text }) => {
+  const chars = text.split("");
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.08, delayChildren: 0.5 }
+    }
+  };
+  const item = {
+    hidden: { opacity: 0, y: 50, filter: "blur(10px)" },
+    show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { type: "spring", stiffness: 100 } }
+  };
+
+  return (
+    <motion.h1 
+      className="hero-title"
+      variants={container}
+      initial="hidden"
+      animate="show"
+      style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
+    >
+      {chars.map((char, index) => (
+        <motion.span key={index} variants={item} style={{ display: "inline-block" }}>
+          {char === " " ? "\u00A0" : char}
+        </motion.span>
+      ))}
+    </motion.h1>
+  );
+};
+
+
+/* ==============================================
+   MAIN APP COMPONENT
+   ============================================== */
+function App() {
+  const [scrolled, setScrolled] = useState(false);
+  
+  // Progress Bar
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+  // Floating background blobs
+  const backgroundBlobVariants = {
+    animate: {
+      y: [0, -50, 0],
+      x: [0, 30, 0],
+      rotate: [0, 10, -10, 0],
+      transition: { duration: 15, repeat: Infinity, ease: "easeInOut" }
+    }
+  };
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <>
+      <CustomCursor />
+
+      {/* Advanced Animated Background */}
+      <div className="tech-grid" />
+      <motion.div 
+        className="floating-blob blob-1" 
+        variants={backgroundBlobVariants} animate="animate"
+      />
+      <motion.div 
+        className="floating-blob blob-2" 
+        variants={backgroundBlobVariants} animate="animate"
+        style={{ animationDelay: "-5s" }}
+      />
+      <div className="noise-overlay" />
+
+      {/* Scroll Progress Bar */}
+      <motion.div
+        style={{ scaleX, transformOrigin: "0%", zIndex: 1001, background: "linear-gradient(90deg, var(--fire-1), var(--fire-2))" }}
+        className="fixed top-0 left-0 right-0 h-1"
+      />
+
+      {/* Navigation */}
+      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+        <div className="nav-content">
+          <motion.a 
+            href="#" 
+            className="logo"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, type: "spring" }}
+          >
+            SHREYASH.DEV
+          </motion.a>
+        </div>
+      </nav>
+
+      <main>
+        {/* HERO SECTION */}
+        <section id="home" className="section" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', paddingTop: '100px' }}>
+          <div className="container" style={{ textAlign: "center", position: "relative", zIndex: 10 }}>
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '8px 24px', border: '1px solid var(--border-color)', borderRadius: '30px', fontSize: '0.9rem', marginBottom: '3rem', backdropFilter: "blur(10px)", background: "rgba(255,255,255,0.03)" }}
+            >
+              <span style={{ width: '8px', height: '8px', background: 'var(--fire-2)', borderRadius: '50%', boxShadow: '0 0 10px var(--fire-2)' }}></span> 
+              AVAILABLE FOR NEW VENTURES
+            </motion.div>
+            
+            <AnimatedTitle text="SHREYASH.DEV" />
+            
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.5, duration: 0.8 }}
+              style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontWeight: 300, marginBottom: '2rem', maxWidth: '800px', margin: '0 auto 2rem' }}
+            >
+              Engineering <span className="text-fire" style={{ fontWeight: 700 }}>Unconventional</span> Web Experiences.
+            </motion.h2>
+            
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.7, duration: 0.8 }}
+              style={{ maxWidth: '600px', fontSize: '1.2rem', marginBottom: '4rem', margin: '0 auto 4rem', color: "var(--text-muted)" }}
+            >
+              I am a front-end developer moving away from the ordinary. I combine deep technical logic with avant-garde aesthetics to build applications that refuse to be ignored.
+            </motion.p>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.9, duration: 0.8 }}
+              style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap' }}
+            >
+              <Magnetic>
+                <a href="#projects" className="btn btn-solid">
+                  Deploy Projects
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <a href="#contact" className="btn btn-ghost">
+                  Establish Comms
+                </a>
+              </Magnetic>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ABOUT SECTION */}
+        <section id="about" className="section">
+          <div className="container">
+            <motion.h2 
+              className="section-title"
+              initial={{ opacity: 0, x: -100, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, type: "spring" }}
+            >
+              Persona<span style={{ color: 'var(--fire-1)' }}>.</span>
+            </motion.h2>
+            
+            <div className="about-grid">
+              <SpotlightCard>
+                <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: 'var(--text-primary)' }}>The Mindset</h3>
+                <p style={{ marginBottom: '1rem', fontSize: '1.1rem' }}>I am currently a BCA final-year student, heavily focused on front-end architecture. My philosophy is simple: functional is required, but memorable is the goal.</p>
+                <p style={{ fontSize: '1.1rem' }}>I've independently engineered five end-to-end applications, treating each as a blank canvas to master DOM manipulation, API integration, and responsive logic.</p>
+              </SpotlightCard>
+              
+              <SpotlightCard>
+                <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: 'var(--text-primary)' }}>Academic Core</h3>
+                <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+                  <GraduationCap size={48} color="var(--fire-1)" />
+                  <div>
+                    <h4 style={{ fontSize: '1.4rem', marginBottom: '0.5rem', color: "white" }}>Bachelor of Computer Applications</h4>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '1rem' }}>HI-TECH Institute of Engineering and Technology</p>
+                    <p style={{ color: 'var(--fire-2)', fontWeight: 600, marginTop: '0.8rem', letterSpacing: "1px" }}>CLASS OF 2026</p>
+                  </div>
+                </div>
+              </SpotlightCard>
+            </div>
+          </div>
+        </section>
+
+        {/* SKILLS SECTION */}
+        <section id="skills" className="section">
+          <div className="container">
+            <motion.h2 
+              className="section-title"
+              initial={{ opacity: 0, x: -100, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, type: "spring" }}
+            >
+              Arsenal<span style={{ color: 'var(--fire-1)' }}>.</span>
+            </motion.h2>
+            
+            <div className="skills-grid">
+              <SpotlightCard>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--text-primary)', fontWeight: 700, marginBottom: '2rem' }}>
+                  <Terminal size={32} color="var(--fire-1)" /> Languages
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+                  {['HTML5', 'CSS3', 'JavaScript (ES6+)', 'PHP', 'SQL'].map(skill => (
+                    <span key={skill} className="skill-tag">{skill}</span>
+                  ))}
+                </div>
+              </SpotlightCard>
+
+              <SpotlightCard>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--text-primary)', fontWeight: 700, marginBottom: '2rem' }}>
+                  <Layers size={32} color="var(--fire-1)" /> Front-End
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+                  {['Responsive UI', 'DOM Manipulation', 'AJAX & Fetch API', 'UX Architecture'].map(skill => (
+                    <span key={skill} className="skill-tag">{skill}</span>
+                  ))}
+                </div>
+              </SpotlightCard>
+
+              <SpotlightCard>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--text-primary)', fontWeight: 700, marginBottom: '2rem' }}>
+                  <Database size={32} color="var(--fire-1)" /> Backend & Ops
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+                  {['MySQL', 'Session Handling', 'Git / GitHub', 'RESTful APIs', 'XAMPP'].map(skill => (
+                    <span key={skill} className="skill-tag">{skill}</span>
+                  ))}
+                </div>
+              </SpotlightCard>
+            </div>
+          </div>
+        </section>
+
+        {/* PROJECTS SECTION */}
+        <section id="projects" className="section">
+          <div className="container">
+            <motion.h2 
+              className="section-title"
+              initial={{ opacity: 0, x: -100, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, type: "spring" }}
+            >
+              Outputs<span style={{ color: 'var(--fire-1)' }}>.</span>
+            </motion.h2>
+
+            <div className="projects-list">
+              {[
+                { title: 'Weather Application', type: 'Real-Time Data Integration', desc: 'A visually aggressive real-time weather platform. Built with a lightning-fast city search feature that returns accurate live conditions via third-party APIs.', tech: ['JS', 'CSS', 'API'] },
+                { title: 'Resume Forge Pro', type: 'Dynamic Web Application', desc: 'An interactive resume builder enabling real-time creation and export. Engineered heavy JavaScript DOM manipulation to instantly reflect user edits with zero lag.', tech: ['HTML', 'CSS', 'JS'] },
+                { title: 'Nexus Meet', type: 'Full-Stack Platform', desc: 'A secure online meeting platform for creating and joining rooms via shareable links. Architected session handling and persistent data storage using a PHP/MySQL stack.', tech: ['PHP', 'MySQL', 'JS'] },
+                { title: 'Med 24/7', type: 'Healthcare Application', desc: 'Full-stack healthcare app for booking appointments and securely accessing records. Features rigorous JS-based form validation backed by PHP and MySQL.', tech: ['PHP', 'MySQL', 'JS'] }
+              ].map((project, i) => (
+                <SpotlightCard key={i}>
+                  <div style={{ marginBottom: '1.5rem' }}>
+                    <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: "white" }}>{project.title}</h3>
+                    <p style={{ color: 'var(--fire-2)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 600 }}>{project.type}</p>
+                  </div>
+                  <p style={{ flexGrow: 1, marginBottom: '3rem', fontSize: '1.05rem', color: "#aaa" }}>{project.desc}</p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '1.5rem' }}>
+                    <div style={{ display: 'flex', gap: '1.2rem', fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 700 }}>
+                      {project.tech.map(t => <span key={t}>{t}</span>)}
+                    </div>
+                    
+                    <Magnetic>
+                      <a href="#" className="project-link-btn">
+                        <ExternalLink size={20} />
+                      </a>
+                    </Magnetic>
+                  </div>
+                </SpotlightCard>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CONTACT SECTION */}
+        <section id="contact" className="section">
+          <div className="container">
+            <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+              <SpotlightCard>
+                <h2 style={{ fontSize: '3.5rem', marginBottom: '1.5rem', color: "white" }}>Initiate Contact</h2>
+                <p style={{ fontSize: '1.2rem', marginBottom: '4rem', color: "#aaa" }}>Seeking an entry-level Web Developer role to apply strong debugging and problem-solving skills to real-world products. Let's break the mold together.</p>
+                
+                <Magnetic>
+                  <a href="mailto:shreyashsingh0717@gmail.com" className="btn btn-solid btn-large">
+                    Send Transmission
+                  </a>
+                </Magnetic>
+
+                <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'center', gap: '3rem', flexWrap: 'wrap' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: "1.1rem" }}><MapPin size={24} color="var(--fire-1)" /> Ghaziabad, India</span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: "1.1rem" }}><Phone size={24} color="var(--fire-2)" /> +91 8810364205</span>
+                </div>
+                
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', fontSize: '1.8rem', marginTop: '3rem' }}>
+                  <Magnetic>
+                    <a href="https://github.com/shreyashsingh2005" target="_blank" className="social-icon">
+                      <i className="fab fa-github"></i>
+                    </a>
+                  </Magnetic>
+                  <Magnetic>
+                    <a href="https://linkedin.com/in/shreyash-singh" target="_blank" className="social-icon">
+                      <i className="fab fa-linkedin-in"></i>
+                    </a>
+                  </Magnetic>
+                </div>
+              </SpotlightCard>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer style={{ borderTop: '1px solid var(--border-color)', padding: '3rem 0', background: "#020202" }}>
+        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div className="logo" style={{ fontSize: '1.5rem' }}>SHREYASH.DEV</div>
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>&copy; 2026 Shreyash Singh. Engineered with precision.</p>
+        </div>
+      </footer>
+    </>
+  );
+}
+
+export default App;
+import React, { useEffect, useState, useRef } from 'react';
+import { motion, useScroll, useSpring, useMotionValue, useTransform } from 'framer-motion';
+import { ExternalLink, MapPin, Phone, Terminal, Layers, Database, GraduationCap } from 'lucide-react';
+import './index.css';
+
+/* ==============================================
+   ADVANCED FRAMER MOTION COMPONENTS
+   ============================================== */
+
+// 1. Magnetic Interaction Wrapper (Pulls elements towards mouse)
+const Magnetic = ({ children }) => {
+  const ref = useRef(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouse = (e) => {
+    const { clientX, clientY } = e;
+    const { height, width, left, top } = ref.current.getBoundingClientRect();
+    const middleX = clientX - (left + width / 2);
+    const middleY = clientY - (top + height / 2);
+    setPosition({ x: middleX, y: middleY });
+  };
+
+  const reset = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
+  const { x, y } = position;
+  return (
+    <motion.div
+      style={{ display: "inline-block", position: "relative" }}
+      ref={ref}
+      onMouseMove={handleMouse}
+      onMouseLeave={reset}
+      animate={{ x: x * 0.2, y: y * 0.2 }}
+      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+// 2. 3D Tilt Spotlight Hover Card (Apple-style Interaction)
+const SpotlightCard = ({ children, className = "" }) => {
+  const divRef = useRef(null);
+  
+  // Spotlight
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = useState(0);
+
+  // 3D Tilt Physics
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
+  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
+  
+  // Rotate based on mouse position relative to center (-0.5 to 0.5)
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"]);
+
+  const handleMouseMove = (e) => {
+    if (!divRef.current) return;
+    const rect = divRef.current.getBoundingClientRect();
+    
+    // Spotlight position
+    const posX = e.clientX - rect.left;
+    const posY = e.clientY - rect.top;
+    setPosition({ x: posX, y: posY });
+    
+    // 3D Tilt calculation
+    const width = rect.width;
+    const height = rect.height;
+    x.set(posX / width - 0.5);
+    y.set(posY / height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    setOpacity(0);
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      ref={divRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setOpacity(1)}
+      onMouseLeave={handleMouseLeave}
+      className={`spotlight-card ${className}`}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d", // Required for inner 3D effect
+        perspective: 1000
+      }}
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
+    >
+      {/* The Illuminating Border Gradient */}
+      <div
+        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300"
+        style={{
+          opacity,
+          background: `radial-gradient(800px circle at ${position.x}px ${position.y}px, rgba(255, 15, 123, 0.4), transparent 40%)`,
+          zIndex: 0,
+        }}
+      />
+      {/* Card Inner Content slightly popped out in Z space */}
+      <div className="card-content" style={{ transform: "translateZ(20px)", transformStyle: "preserve-3d" }}>
+        {children}
+      </div>
+    </motion.div>
+  );
+};
+
+// 3. Character-by-Character Stagger Text Reveal
+const AnimatedTitle = ({ text }) => {
+  const chars = text.split("");
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.08, delayChildren: 0.5 }
+    }
+  };
+  const item = {
+    hidden: { opacity: 0, y: 50, filter: "blur(10px)" },
+    show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { type: "spring", stiffness: 100 } }
+  };
+
+  return (
+    <motion.h1 
+      className="hero-title"
+      variants={container}
+      initial="hidden"
+      animate="show"
+      style={{ display: "flex", flexWrap: "nowrap", justifyContent: "center", whiteSpace: "nowrap" }}
+    >
+      {chars.map((char, index) => (
+        <motion.span key={index} variants={item} style={{ display: "inline-block" }}>
+          {char === " " ? "\u00A0" : char}
+        </motion.span>
+      ))}
+    </motion.h1>
+  );
+};
+
+// 4. Infinite Marquee for Tech Stack (Very popular in high-end sites)
+const InfiniteMarquee = () => {
+  const stack = [
+    "REACT.JS", "FRAMER MOTION", "JAVASCRIPT", "UI/UX DESIGN", "NODE.JS", "HTML/CSS", "MYSQL"
+  ];
+  return (
+    <div className="marquee-container">
+      <motion.div 
+        className="marquee-track"
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{ ease: "linear", duration: 30, repeat: Infinity }}
+      >
+        <div className="marquee-content">
+          {stack.map((item, i) => (
+            <React.Fragment key={i}>
+              <span>{item}</span> <span className="dot">•</span>
+            </React.Fragment>
+          ))}
+          {/* Duplicate for seamless looping */}
+          {stack.map((item, i) => (
+            <React.Fragment key={`dup-${i}`}>
+              <span>{item}</span> <span className="dot">•</span>
+            </React.Fragment>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+
+/* ==============================================
+   MAIN APP COMPONENT
+   ============================================== */
+function App() {
+  const [scrolled, setScrolled] = useState(false);
+  
+  // Progress Bar
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+  // Floating background blobs
+  const backgroundBlobVariants = {
+    animate: {
+      y: [0, -50, 0],
+      x: [0, 30, 0],
+      rotate: [0, 10, -10, 0],
+      transition: { duration: 15, repeat: Infinity, ease: "easeInOut" }
+    }
+  };
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <>
+      {/* Advanced Animated Background */}
+      <div className="tech-grid" />
+      <motion.div 
+        className="floating-blob blob-1" 
+        variants={backgroundBlobVariants} animate="animate"
+      />
+      <motion.div 
+        className="floating-blob blob-2" 
+        variants={backgroundBlobVariants} animate="animate"
+        style={{ animationDelay: "-5s" }}
+      />
+      <div className="noise-overlay" />
+
+      {/* Scroll Progress Bar */}
+      <motion.div
+        style={{ scaleX, transformOrigin: "0%", zIndex: 1001, background: "linear-gradient(90deg, var(--fire-1), var(--fire-2))" }}
+        className="fixed top-0 left-0 right-0 h-1"
+      />
+
+      {/* Navigation */}
+      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+        <div className="nav-content">
+          <motion.a 
+            href="#" 
+            className="logo"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, type: "spring" }}
+          >
+            SHREYASH.DEV
+          </motion.a>
+        </div>
+      </nav>
+
+      <main>
+        {/* HERO SECTION */}
+        <section id="home" className="section" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', paddingTop: '100px' }}>
+          <div className="container" style={{ textAlign: "center", position: "relative", zIndex: 10 }}>
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '8px 24px', border: '1px solid var(--border-color)', borderRadius: '30px', fontSize: '0.9rem', marginBottom: '3rem', backdropFilter: "blur(10px)", background: "rgba(255,255,255,0.03)" }}
+            >
+              <span style={{ width: '8px', height: '8px', background: 'var(--fire-2)', borderRadius: '50%', boxShadow: '0 0 10px var(--fire-2)' }}></span> 
+              AVAILABLE FOR NEW VENTURES
+            </motion.div>
+            
+            <AnimatedTitle text="SHREYASH.DEV" />
+            
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.5, duration: 0.8 }}
+              style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontWeight: 300, marginBottom: '2rem', maxWidth: '800px', margin: '0 auto 2rem' }}
+            >
+              Engineering <span className="text-fire" style={{ fontWeight: 700 }}>Unconventional</span> Web Experiences.
+            </motion.h2>
+            
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.7, duration: 0.8 }}
+              style={{ maxWidth: '600px', fontSize: '1.2rem', marginBottom: '4rem', margin: '0 auto 4rem', color: "var(--text-muted)" }}
+            >
+              I am a front-end developer moving away from the ordinary. I combine deep technical logic with avant-garde aesthetics to build applications that refuse to be ignored.
+            </motion.p>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.9, duration: 0.8 }}
+              style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap' }}
+            >
+              <Magnetic>
+                <a href="#projects" className="btn btn-solid">
+                  Deploy Projects
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <a href="#contact" className="btn btn-ghost">
+                  Establish Comms
+                </a>
+              </Magnetic>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* INFINITE MARQUEE */}
+        <InfiniteMarquee />
+
+        {/* ABOUT SECTION */}
+        <section id="about" className="section">
+          <div className="container">
+            <motion.h2 
+              className="section-title"
+              initial={{ opacity: 0, x: -100, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, type: "spring" }}
+            >
+              Persona<span style={{ color: 'var(--fire-1)' }}>.</span>
+            </motion.h2>
+            
+            <div className="about-grid">
+              <SpotlightCard>
+                <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: 'var(--text-primary)' }}>The Mindset</h3>
+                <p style={{ marginBottom: '1rem', fontSize: '1.1rem' }}>I am currently a BCA final-year student, heavily focused on front-end architecture. My philosophy is simple: functional is required, but memorable is the goal.</p>
+                <p style={{ fontSize: '1.1rem' }}>I've independently engineered five end-to-end applications, treating each as a blank canvas to master DOM manipulation, API integration, and responsive logic.</p>
+              </SpotlightCard>
+              
+              <SpotlightCard>
+                <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: 'var(--text-primary)' }}>Academic Core</h3>
+                <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+                  <GraduationCap size={48} color="var(--fire-1)" />
+                  <div>
+                    <h4 style={{ fontSize: '1.4rem', marginBottom: '0.5rem', color: "white" }}>Bachelor of Computer Applications</h4>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '1rem' }}>HI-TECH Institute of Engineering and Technology</p>
+                    <p style={{ color: 'var(--fire-2)', fontWeight: 600, marginTop: '0.8rem', letterSpacing: "1px" }}>CLASS OF 2026</p>
+                  </div>
+                </div>
+              </SpotlightCard>
+            </div>
+          </div>
+        </section>
+
+        {/* SKILLS SECTION */}
+        <section id="skills" className="section">
+          <div className="container">
+            <motion.h2 
+              className="section-title"
+              initial={{ opacity: 0, x: -100, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, type: "spring" }}
+            >
+              Arsenal<span style={{ color: 'var(--fire-1)' }}>.</span>
+            </motion.h2>
+            
+            <div className="skills-grid">
+              <SpotlightCard>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--text-primary)', fontWeight: 700, marginBottom: '2rem' }}>
+                  <Terminal size={32} color="var(--fire-1)" /> Languages
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+                  {['HTML5', 'CSS3', 'JavaScript (ES6+)', 'PHP', 'SQL'].map((skill, i) => (
+                    <motion.span 
+                      key={skill} 
+                      className="skill-tag"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1 }}
+                    >
+                      {skill}
+                    </motion.span>
+                  ))}
+                </div>
+              </SpotlightCard>
+
+              <SpotlightCard>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--text-primary)', fontWeight: 700, marginBottom: '2rem' }}>
+                  <Layers size={32} color="var(--fire-1)" /> Front-End
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+                  {['Responsive UI', 'DOM Manipulation', 'AJAX & Fetch API', 'UX Architecture'].map((skill, i) => (
+                    <motion.span 
+                      key={skill} 
+                      className="skill-tag"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1 }}
+                    >
+                      {skill}
+                    </motion.span>
+                  ))}
+                </div>
+              </SpotlightCard>
+
+              <SpotlightCard>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '1.5rem', fontFamily: 'var(--font-heading)', color: 'var(--text-primary)', fontWeight: 700, marginBottom: '2rem' }}>
+                  <Database size={32} color="var(--fire-1)" /> Backend & Ops
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+                  {['MySQL', 'Session Handling', 'Git / GitHub', 'RESTful APIs', 'XAMPP'].map((skill, i) => (
+                    <motion.span 
+                      key={skill} 
+                      className="skill-tag"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1 }}
+                    >
+                      {skill}
+                    </motion.span>
+                  ))}
+                </div>
+              </SpotlightCard>
+            </div>
+          </div>
+        </section>
+
+        {/* PROJECTS SECTION */}
+        <section id="projects" className="section">
+          <div className="container">
+            <motion.h2 
+              className="section-title"
+              initial={{ opacity: 0, x: -100, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, type: "spring" }}
+            >
+              Outputs<span style={{ color: 'var(--fire-1)' }}>.</span>
+            </motion.h2>
+
+            <div className="projects-list">
+              {[
+                { title: 'Weather Application', type: 'Real-Time Data Integration', desc: 'A visually aggressive real-time weather platform. Built with a lightning-fast city search feature that returns accurate live conditions via third-party APIs.', tech: ['JS', 'CSS', 'API'] },
+                { title: 'Resume Forge Pro', type: 'Dynamic Web Application', desc: 'An interactive resume builder enabling real-time creation and export. Engineered heavy JavaScript DOM manipulation to instantly reflect user edits with zero lag.', tech: ['HTML', 'CSS', 'JS'] },
+                { title: 'Nexus Meet', type: 'Full-Stack Platform', desc: 'A secure online meeting platform for creating and joining rooms via shareable links. Architected session handling and persistent data storage using a PHP/MySQL stack.', tech: ['PHP', 'MySQL', 'JS'] },
+                { title: 'Med 24/7', type: 'Healthcare Application', desc: 'Full-stack healthcare app for booking appointments and securely accessing records. Features rigorous JS-based form validation backed by PHP and MySQL.', tech: ['PHP', 'MySQL', 'JS'] }
+              ].map((project, i) => (
+                <SpotlightCard key={i}>
+                  <div style={{ marginBottom: '1.5rem' }}>
+                    <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: "white" }}>{project.title}</h3>
+                    <p style={{ color: 'var(--fire-2)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 600 }}>{project.type}</p>
+                  </div>
+                  <p style={{ flexGrow: 1, marginBottom: '3rem', fontSize: '1.05rem', color: "#aaa" }}>{project.desc}</p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '1.5rem' }}>
+                    <div style={{ display: 'flex', gap: '1.2rem', fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 700 }}>
+                      {project.tech.map(t => <span key={t}>{t}</span>)}
+                    </div>
+                    
+                    <Magnetic>
+                      <a href="#" className="project-link-btn">
+                        <ExternalLink size={20} />
+                      </a>
+                    </Magnetic>
+                  </div>
+                </SpotlightCard>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CONTACT SECTION */}
+        <section id="contact" className="section">
+          <div className="container">
+            <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+              <SpotlightCard>
+                <h2 style={{ fontSize: '3.5rem', marginBottom: '1.5rem', color: "white" }}>Initiate Contact</h2>
+                <p style={{ fontSize: '1.2rem', marginBottom: '4rem', color: "#aaa" }}>Seeking an entry-level Web Developer role to apply strong debugging and problem-solving skills to real-world products. Let's break the mold together.</p>
+                
+                <Magnetic>
+                  <a href="mailto:shreyashsingh0717@gmail.com" className="btn btn-solid btn-large">
+                    Send Transmission
+                  </a>
+                </Magnetic>
+
+                <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'center', gap: '3rem', flexWrap: 'wrap' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: "1.1rem" }}><MapPin size={24} color="var(--fire-1)" /> Ghaziabad, India</span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: "1.1rem" }}><Phone size={24} color="var(--fire-2)" /> +91 8810364205</span>
+                </div>
+                
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', fontSize: '1.8rem', marginTop: '3rem' }}>
+                  <Magnetic>
+                    <a href="https://github.com/shreyashsingh2005" target="_blank" className="social-icon">
+                      <i className="fab fa-github"></i>
+                    </a>
+                  </Magnetic>
+                  <Magnetic>
+                    <a href="https://linkedin.com/in/shreyash-singh" target="_blank" className="social-icon">
+                      <i className="fab fa-linkedin-in"></i>
+                    </a>
+                  </Magnetic>
+                </div>
+              </SpotlightCard>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer style={{ borderTop: '1px solid var(--border-color)', padding: '3rem 0', background: "#020202" }}>
+        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div className="logo" style={{ fontSize: '1.5rem' }}>SHREYASH.DEV</div>
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>&copy; 2026 Shreyash Singh. Engineered with precision.</p>
+        </div>
+      </footer>
+    </>
+  );
+}
+
+export default App;
+import React, { useEffect, useState, useRef } from 'react';
+import { motion, useScroll, useSpring, useMotionValue, useTransform } from 'framer-motion';
+import { ExternalLink, MapPin, Phone, Terminal, Layers, Database, GraduationCap } from 'lucide-react';
+import './index.css';
+
+/* ==============================================
+   ADVANCED FRAMER MOTION COMPONENTS
+   ============================================== */
+
+const Magnetic = ({ children }) => {
+  const ref = useRef(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouse = (e) => {
+    const { clientX, clientY } = e;
+    const { height, width, left, top } = ref.current.getBoundingClientRect();
+    const middleX = clientX - (left + width / 2);
+    const middleY = clientY - (top + height / 2);
+    setPosition({ x: middleX, y: middleY });
+  };
+
+  const reset = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
+  const { x, y } = position;
+  return (
+    <motion.div
+      style={{ display: "inline-block", position: "relative" }}
+      ref={ref}
+      onMouseMove={handleMouse}
+      onMouseLeave={reset}
+      animate={{ x: x * 0.2, y: y * 0.2 }}
+      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+const SpotlightCard = ({ children, className = "" }) => {
+  const divRef = useRef(null);
+  
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = useState(0);
+
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
+  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
+  
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["5deg", "-5deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-5deg", "5deg"]);
+
+  const handleMouseMove = (e) => {
+    if (!divRef.current) return;
+    const rect = divRef.current.getBoundingClientRect();
+    
+    const posX = e.clientX - rect.left;
+    const posY = e.clientY - rect.top;
+    setPosition({ x: posX, y: posY });
+    
+    const width = rect.width;
+    const height = rect.height;
+    x.set(posX / width - 0.5);
+    y.set(posY / height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    setOpacity(0);
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      ref={divRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setOpacity(1)}
+      onMouseLeave={handleMouseLeave}
+      className={`spotlight-card ${className}`}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+        perspective: 1000
+      }}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.7, type: "spring", bounce: 0.2 }}
+    >
+      <div
+        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300"
+        style={{
+          opacity,
+          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(139, 92, 246, 0.2), transparent 40%)`,
+          zIndex: 0,
+        }}
+      />
+      <div className="card-content" style={{ transform: "translateZ(10px)", transformStyle: "preserve-3d" }}>
+        {children}
+      </div>
+    </motion.div>
+  );
+};
+
+
+/* ==============================================
+   MAIN APP COMPONENT
+   ============================================== */
+function App() {
+  const [scrolled, setScrolled] = useState(false);
+  
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+  const backgroundBlobVariants = {
+    animate: {
+      y: [0, -30, 0],
+      x: [0, 20, 0],
+      transition: { duration: 10, repeat: Infinity, ease: "easeInOut" }
+    }
+  };
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <>
+      <div className="tech-grid" />
+      <motion.div 
+        className="floating-blob blob-1" 
+        variants={backgroundBlobVariants} animate="animate"
+      />
+      <motion.div 
+        className="floating-blob blob-2" 
+        variants={backgroundBlobVariants} animate="animate"
+        style={{ animationDelay: "-3s" }}
+      />
+      <div className="noise-overlay" />
+
+      <motion.div
+        style={{ scaleX, transformOrigin: "0%", zIndex: 1001, background: "linear-gradient(90deg, var(--fire-1), var(--fire-2))" }}
+        className="fixed top-0 left-0 right-0 h-1"
+      />
+
+      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+        <div className="nav-content">
+          <motion.a 
+            href="#" 
+            className="logo"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            shreyash.dev
+          </motion.a>
+          
+          {/* Restored Elegant Navbar Links */}
+          <motion.ul 
+            className="nav-links"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Expertise</a></li>
+            <li><a href="#projects">Work</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </motion.ul>
+        </div>
+      </nav>
+
+      <main>
+        {/* HERO SECTION */}
+        <section id="home" className="section" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', paddingTop: '80px' }}>
+          <div className="container" style={{ position: "relative", zIndex: 10 }}>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.5 }}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', border: '1px solid var(--border-color)', borderRadius: '20px', fontSize: '0.85rem', marginBottom: '2rem', backdropFilter: "blur(10px)", background: "rgba(255,255,255,0.03)", color: "var(--text-muted)" }}
+            >
+              <span style={{ width: '6px', height: '6px', background: 'var(--fire-1)', borderRadius: '50%', boxShadow: '0 0 10px var(--fire-1)' }}></span> 
+              Available for opportunities
+            </motion.div>
+            
+            <motion.h1 
+              className="hero-title"
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.7 }}
+            >
+              Shreyash Singh
+            </motion.h1>
+            
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.7 }}
+              style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontWeight: 500, marginBottom: '2rem', maxWidth: '800px', color: "var(--text-muted)" }}
+            >
+              Building <span className="text-fire" style={{ fontWeight: 700 }}>digital experiences</span> with precision and modern elegance.
+            </motion.h2>
+            
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.7 }}
+              style={{ maxWidth: '600px', fontSize: '1.1rem', marginBottom: '3rem', color: "var(--text-muted)" }}
+            >
+              I am a front-end developer specializing in sleek interfaces and high-performance web applications. I bridge the gap between complex engineering and exceptional design.
+            </motion.p>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.7 }}
+              style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}
+            >
+              <Magnetic>
+                <a href="#projects" className="btn btn-solid">
+                  View Projects
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <a href="#contact" className="btn btn-ghost">
+                  Get in Touch
+                </a>
+              </Magnetic>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ABOUT SECTION */}
+        <section id="about" className="section">
+          <div className="container">
+            <motion.h2 
+              className="section-title"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              About Me
+            </motion.h2>
+            
+            <div className="about-grid">
+              <SpotlightCard>
+                <h3 style={{ fontSize: '1.5rem', marginBottom: '1.2rem', color: '#fff' }}>My Journey</h3>
+                <p style={{ marginBottom: '1rem', fontSize: '1rem' }}>I am a BCA final-year student heavily focused on front-end architecture. My philosophy is simple: clean code leads to flawless user experiences.</p>
+                <p style={{ fontSize: '1rem' }}>I've engineered multiple end-to-end applications, constantly pushing the boundaries of what is possible with modern web technologies, DOM manipulation, and responsive design.</p>
+              </SpotlightCard>
+              
+              <SpotlightCard>
+                <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: '#fff' }}>Education</h3>
+                <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+                  <div style={{ padding: '12px', background: 'rgba(255,255,255,0.05)', borderRadius: '12px' }}>
+                    <GraduationCap size={32} color="var(--fire-1)" />
+                  </div>
+                  <div>
+                    <h4 style={{ fontSize: '1.2rem', marginBottom: '0.4rem', color: "#fff" }}>Bachelor of Computer Applications</h4>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>HI-TECH Institute of Engineering and Technology</p>
+                    <p style={{ color: 'var(--fire-1)', fontWeight: 600, marginTop: '0.8rem', fontSize: '0.85rem', letterSpacing: "1px" }}>GRADUATING 2026</p>
+                  </div>
+                </div>
+              </SpotlightCard>
+            </div>
+          </div>
+        </section>
+
+        {/* SKILLS SECTION */}
+        <section id="skills" className="section">
+          <div className="container">
+            <motion.h2 
+              className="section-title"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              Technical Expertise
+            </motion.h2>
+            
+            <div className="skills-grid">
+              <SpotlightCard>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '1.3rem', fontFamily: 'var(--font-heading)', color: '#fff', fontWeight: 600, marginBottom: '2rem' }}>
+                  <Terminal size={24} color="var(--fire-1)" /> Core Languages
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                  {['HTML5', 'CSS3', 'JavaScript (ES6+)', 'PHP', 'SQL'].map((skill, i) => (
+                    <motion.span 
+                      key={skill} className="skill-tag"
+                      initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                    >
+                      {skill}
+                    </motion.span>
+                  ))}
+                </div>
+              </SpotlightCard>
+
+              <SpotlightCard>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '1.3rem', fontFamily: 'var(--font-heading)', color: '#fff', fontWeight: 600, marginBottom: '2rem' }}>
+                  <Layers size={24} color="var(--fire-1)" /> Front-End
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                  {['Responsive UI', 'DOM Manipulation', 'React.js', 'Framer Motion'].map((skill, i) => (
+                    <motion.span 
+                      key={skill} className="skill-tag"
+                      initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                    >
+                      {skill}
+                    </motion.span>
+                  ))}
+                </div>
+              </SpotlightCard>
+
+              <SpotlightCard>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '1.3rem', fontFamily: 'var(--font-heading)', color: '#fff', fontWeight: 600, marginBottom: '2rem' }}>
+                  <Database size={24} color="var(--fire-1)" /> Backend & Tools
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                  {['MySQL', 'Session Handling', 'Git / GitHub', 'RESTful APIs'].map((skill, i) => (
+                    <motion.span 
+                      key={skill} className="skill-tag"
+                      initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                    >
+                      {skill}
+                    </motion.span>
+                  ))}
+                </div>
+              </SpotlightCard>
+            </div>
+          </div>
+        </section>
+
+        {/* PROJECTS SECTION */}
+        <section id="projects" className="section">
+          <div className="container">
+            <motion.h2 
+              className="section-title"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              Featured Projects
+            </motion.h2>
+
+            <div className="projects-list">
+              {[
+                { title: 'Weather App', type: 'API Integration', desc: 'A real-time weather platform with a lightning-fast city search feature that returns accurate live conditions via third-party APIs.', tech: ['JavaScript', 'CSS', 'REST API'] },
+                { title: 'Resume Forge', type: 'Web Application', desc: 'An interactive resume builder enabling real-time creation and export. Engineered heavy DOM manipulation to instantly reflect user edits.', tech: ['HTML', 'CSS', 'JavaScript'] },
+                { title: 'Nexus Meet', type: 'Full-Stack Platform', desc: 'A secure online meeting platform for creating and joining rooms via shareable links. Architected with robust session handling.', tech: ['PHP', 'MySQL', 'JavaScript'] },
+                { title: 'Med 24/7', type: 'Healthcare Portal', desc: 'Full-stack healthcare app for booking appointments and securely accessing records. Features rigorous form validation and data security.', tech: ['PHP', 'MySQL', 'JavaScript'] }
+              ].map((project, i) => (
+                <SpotlightCard key={i}>
+                  <div style={{ marginBottom: '1.2rem' }}>
+                    <h3 style={{ fontSize: '1.6rem', marginBottom: '0.4rem', color: "#fff" }}>{project.title}</h3>
+                    <p style={{ color: 'var(--fire-1)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>{project.type}</p>
+                  </div>
+                  <p style={{ flexGrow: 1, marginBottom: '2.5rem', fontSize: '1rem', color: "var(--text-muted)" }}>{project.desc}</p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '1.5rem' }}>
+                    <div style={{ display: 'flex', gap: '1rem', fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 500 }}>
+                      {project.tech.map(t => <span key={t}>{t}</span>)}
+                    </div>
+                    
+                    <Magnetic>
+                      <a href="#" className="project-link-btn">
+                        <ExternalLink size={18} />
+                      </a>
+                    </Magnetic>
+                  </div>
+                </SpotlightCard>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CONTACT SECTION */}
+        <section id="contact" className="section">
+          <div className="container">
+            <div style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center' }}>
+              <SpotlightCard>
+                <h2 style={{ fontSize: '2.5rem', marginBottom: '1.2rem', color: "#fff" }}>Let's Connect</h2>
+                <p style={{ fontSize: '1.1rem', marginBottom: '3rem', color: "var(--text-muted)" }}>Seeking an entry-level Web Developer role to apply strong debugging and problem-solving skills to real-world products. My inbox is always open.</p>
+                
+                <Magnetic>
+                  <a href="mailto:shreyashsingh0717@gmail.com" className="btn btn-solid btn-large">
+                    Say Hello
+                  </a>
+                </Magnetic>
+
+                <div style={{ marginTop: '3.5rem', display: 'flex', justifyContent: 'center', gap: '3rem', flexWrap: 'wrap' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: "1rem" }}><MapPin size={20} color="var(--fire-1)" /> Ghaziabad, India</span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: "1rem" }}><Phone size={20} color="var(--fire-2)" /> +91 8810364205</span>
+                </div>
+                
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', fontSize: '1.5rem', marginTop: '2.5rem' }}>
+                  <Magnetic>
+                    <a href="https://github.com/shreyashsingh2005" target="_blank" className="social-icon">
+                      <i className="fab fa-github"></i>
+                    </a>
+                  </Magnetic>
+                  <Magnetic>
+                    <a href="https://linkedin.com/in/shreyash-singh" target="_blank" className="social-icon">
+                      <i className="fab fa-linkedin-in"></i>
+                    </a>
+                  </Magnetic>
+                </div>
+              </SpotlightCard>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer style={{ borderTop: '1px solid var(--border-color)', padding: '2.5rem 0', background: "var(--bg-dark)" }}>
+        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div className="logo" style={{ fontSize: '1.2rem' }}>shreyash.dev</div>
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>&copy; 2026 Shreyash Singh. Designed & Built.</p>
+        </div>
+      </footer>
+    </>
+  );
+}
+
+export default App;

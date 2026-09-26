@@ -1,0 +1,182 @@
+/* ============================================
+   SHREYASH SINGH — PORTFOLIO
+   v3 — Full Responsive + Enhanced
+   ============================================ */
+
+:root {
+  --black: #0a0a0a;
+  --black-card: #121212;
+  --black-deep: #050505;
+  --black-section: #0f0f0f;
+  --red: #c41c1c;
+  --red-bright: #e02020;
+  --red-dark: #8b0000;
+  --red-muted: rgba(196, 28, 28, 0.1);
+  --red-border: rgba(196, 28, 28, 0.3);
+  --white: #ffffff;
+  --off-white: #ececec;
+  --muted: #b0b0b0;
+  --dim: #787878;
+  --border: #252525;
+  --border-mid: #353535;
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── RESET ── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { border: none; background: none; cursor: pointer; font: inherit; }
+ul, ol { list-style: none; }
+::selection { background: var(--red); color: var(--white); }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--black-deep); }
+::-webkit-scrollbar-thumb { background: var(--red); border-radius: 0; }
+
+/* ── BACKGROUND GRID ── */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  pointer-events: none;
+  animation: gridPulse 8s ease-in-out infinite alternate;
+}
+@keyframes gridPulse {
+  0% { opacity: 0.5; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.05); }
+}
+
+/* ── LAYOUT ── */
+.container {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 6%;
+}
+
+/* ── BUTTONS ── */
+.btn-red {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 36px;
+  background: var(--red);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  border: 2px solid var(--red);
+  transition: all 0.3s var(--ease);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  min-height: 48px; /* touch target */
+  white-space: nowrap;
+}
+.btn-red:hover { background: #a01515; transform: scale(1.04) translateY(-2px); box-shadow: 0 12px 30px rgba(196,28,28,0.35); }
+.btn-red:active { transform: scale(0.97); }
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 36px;
+  background: transparent;
+  color: var(--white);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  border: 2px solid rgba(255,255,255,0.4);
+  transition: all 0.3s var(--ease);
+  cursor: pointer;
+  min-height: 48px; /* touch target */
+  white-space: nowrap;
+}
+.btn-outline:hover { border-color: var(--white); background: var(--white); color: var(--black); transform: scale(1.04) translateY(-2px); box-shadow: 0 12px 30px rgba(255,255,255,0.15); }
+.btn-outline:active { transform: scale(0.97); }
+
+/* ── TAGS ── */
+.tag {
+  display: inline-block;
+  padding: 6px 14px;
+  border: 1px solid var(--border-mid);
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  transition: all 0.25s var(--ease);
+  cursor: default;
+}
+.tag:hover {
+  border-color: var(--red);
+  color: var(--white);
+  background: var(--red-muted);
+}
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ══════════════════════════════
+   RESPONSIVE BREAKPOINTS
+══════════════════════════════ */
+
+/* ── Mobile first — smallest */
+@media (max-width: 479px) {
+  html { font-size: 14px; }
+  .container { padding: 0 5%; }
+  .btn-red, .btn-outline {
+    padding: 13px 24px;
+    font-size: 0.875rem;
+  }
+}
+
+/* ── Small phones */
+@media (min-width: 375px) and (max-width: 479px) {
+  .container { padding: 0 5.5%; }
+}
+
+/* ── Tablets */
+@media (max-width: 768px) {
+  .container { padding: 0 6%; }
+}
+
+/* ── Large desktop */
+@media (min-width: 1920px) {
+  .container { padding: 0 8%; }
+  html { font-size: 18px; }
+}
