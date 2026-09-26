@@ -9,6 +9,7 @@ import Skills from './components/Skills';
 import Process from './components/Process';
 import Stats from './components/Stats';
 import Statement from './components/Statement';
+import Resume from './components/Resume';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import './index.css';
@@ -36,6 +37,7 @@ export default function App() {
         <Process />
         <Stats />
         <Statement />
+        <Resume />
         <Contact />
       </main>
       <Footer />

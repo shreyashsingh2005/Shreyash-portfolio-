@@ -33,6 +33,7 @@ export default function Navbar() {
     { label: 'About', id: 'about' },
     { label: 'Projects', id: 'projects' },
     { label: 'Skills', id: 'skills' },
+    { label: 'Resume', id: 'resume' },
     { label: 'Contact', id: 'contact' },
   ];
 
@@ -52,7 +53,7 @@ export default function Navbar() {
         backdropFilter: 'blur(16px)',
         transition: 'all 0.4s var(--ease)',
       }}>
-        <div style={{ maxWidth: '1600px', margin: '0 auto', padding: '0 6%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ maxWidth: '1920px', margin: '0 auto', padding: '0 5%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
           {/* Logo */}
           <button onClick={() => scrollTo('home')} style={{ display: 'flex', flexDirection: 'column', gap: '2px', cursor: 'pointer', background: 'none', border: 'none', padding: '4px 0' }}>
