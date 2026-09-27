@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 /* ─────────────────────────────────────────
    RICH DEVELOPER DASHBOARD VISUAL
@@ -197,7 +197,7 @@ export default function Hero() {
     hidden: { opacity: 0 },
     visible: { 
       opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+      transition: { staggerChildren: 0.1, delayChildren: 2.5 }
     }
   };
 
@@ -268,25 +268,31 @@ export default function Hero() {
             </motion.div>
 
             <motion.div variants={itemVariants} style={{ overflow: 'hidden' }}>
-              <div style={{ display: 'flex', overflow: 'hidden' }}>
+              <div style={{ display: 'flex', overflow: 'hidden', paddingBottom: '16px' }}>
                 {name1.map((char, i) => (
-                  <motion.span key={i} variants={letterVariants} style={{
+                  <motion.span key={i} variants={letterVariants} 
+                  whileHover={{ y: -20, scale: 1.1, color: 'var(--red)', transition: { type: 'spring', stiffness: 300 } }}
+                  style={{
                     fontFamily: 'var(--font-display)', fontWeight: 900,
                     fontSize: 'clamp(4rem, 11vw, 12rem)',
                     lineHeight: 0.86, textTransform: 'uppercase',
                     letterSpacing: '-0.02em', color: 'var(--white)',
+                    display: 'inline-block', cursor: 'default'
                   }}>{char}</motion.span>
                 ))}
               </div>
-              <div style={{ display: 'flex', overflow: 'hidden' }}>
+              <div style={{ display: 'flex', overflow: 'hidden', paddingBottom: '16px' }}>
                 {name2.map((char, i) => (
-                  <motion.span key={i} variants={letterVariants} style={{
+                  <motion.span key={i} variants={letterVariants} 
+                  whileHover={{ y: -20, scale: 1.1, WebkitTextStroke: '2px var(--red)', transition: { type: 'spring', stiffness: 300 } }}
+                  style={{
                     fontFamily: 'var(--font-display)', fontWeight: 900,
                     fontSize: 'clamp(4rem, 11vw, 12rem)',
                     lineHeight: 0.86, textTransform: 'uppercase',
                     letterSpacing: '-0.02em',
                     WebkitTextStroke: 'clamp(1.5px, 0.18vw, 2px) rgba(255,255,255,0.8)',
                     color: 'transparent',
+                    display: 'inline-block', cursor: 'default'
                   }}>{char}</motion.span>
                 ))}
               </div>
@@ -392,6 +398,29 @@ export default function Hero() {
           .dev-visual-wrap { height: 260px; }
         }
       `}</style>
+
+      {/* Animated Scroll Indicator */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 1 }}
+        style={{
+          position: 'absolute', bottom: '0px', left: '5%',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px',
+          zIndex: 10
+        }}
+      >
+        <div style={{ writingMode: 'vertical-rl', fontFamily: 'var(--font-body)', fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.3em', color: 'var(--muted)' }}>
+          Scroll
+        </div>
+        <div style={{ width: '1px', height: '60px', background: 'rgba(255,255,255,0.1)', position: 'relative', overflow: 'hidden' }}>
+          <motion.div
+            animate={{ y: ['-100%', '100%'] }}
+            transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '50%', background: 'var(--red)' }}
+          />
+        </div>
+      </motion.div>
     </section>
   );
 }

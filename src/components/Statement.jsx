@@ -1,59 +1,43 @@
 import React from 'react';
-import { useScrollReveal } from '../hooks/useScrollReveal';
+import { motion } from 'framer-motion';
 
 export default function Statement() {
-  const [ref, visible] = useScrollReveal(0.2);
-
   return (
-    <section style={{ background: 'var(--red)', padding: '100px 0', overflow: 'hidden', position: 'relative' }}>
-      {/* Giant quote mark */}
-      <div aria-hidden="true" style={{
-        position: 'absolute', top: '-10%', left: '-2%',
-        fontFamily: 'var(--font-display)', fontWeight: 900,
-        fontSize: 'clamp(16rem, 35vw, 40rem)',
-        lineHeight: 0.7, color: 'rgba(0,0,0,0.15)',
-        userSelect: 'none', pointerEvents: 'none',
-      }}>"</div>
-
-      <div className="container" ref={ref}>
-        <div style={{
-          maxWidth: '920px',
-          margin: '0 auto',
-          textAlign: 'center',
-          position: 'relative', zIndex: 1,
-        }}>
-          <div style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? 'translateY(0)' : 'translateY(40px)',
-            transition: 'all 1s cubic-bezier(0.16,1,0.3,1)',
-          }}>
-            <h2 style={{
-              fontFamily: 'var(--font-display)',
-              fontWeight: 900,
-              fontSize: 'clamp(2rem, 4.5vw, 4rem)',
-              textTransform: 'uppercase',
-              color: 'var(--white)',
-              lineHeight: 1.1,
-              letterSpacing: '-0.01em',
-              marginBottom: '32px',
-            }}>
-              "Good interfaces aren't just built to look good. They're built to make things easier."
-            </h2>
-
-            <div style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px',
-            }}>
-              <div style={{ width: '40px', height: '1px', background: 'rgba(255,255,255,0.5)' }} />
-              <span style={{
-                fontFamily: 'var(--font-body)', fontSize: '0.875rem',
-                color: 'rgba(255,255,255,0.8)', fontStyle: 'italic',
-                letterSpacing: '0.1em',
-              }}>— SHREYASH SINGH</span>
-              <div style={{ width: '40px', height: '1px', background: 'rgba(255,255,255,0.5)' }} />
+    <section style={{ background: 'var(--red)', padding: '60px 0', overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center' }}>
+      
+      <div className="marquee-container" style={{ whiteSpace: 'nowrap', display: 'flex', width: '200vw' }}>
+        <motion.div 
+          animate={{ x: ["0%", "-100%"] }}
+          transition={{ repeat: Infinity, ease: 'linear', duration: 15 }}
+          style={{ display: 'flex', gap: '32px', paddingRight: '32px', flexShrink: 0 }}
+        >
+          {Array(4).fill(0).map((_, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(3rem, 6vw, 5rem)', textTransform: 'uppercase', color: 'var(--white)', letterSpacing: '-0.02em', lineHeight: 1 }}>
+                GOOD INTERFACES MAKE THINGS EASIER
+              </span>
+              <span style={{ color: 'var(--black)', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>✦</span>
             </div>
-          </div>
-        </div>
+          ))}
+        </motion.div>
+        
+        {/* Duplicate for seamless infinite scroll */}
+        <motion.div 
+          animate={{ x: ["0%", "-100%"] }}
+          transition={{ repeat: Infinity, ease: 'linear', duration: 15 }}
+          style={{ display: 'flex', gap: '32px', paddingRight: '32px', flexShrink: 0 }}
+        >
+          {Array(4).fill(0).map((_, i) => (
+            <div key={i + 4} style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(3rem, 6vw, 5rem)', textTransform: 'uppercase', color: 'var(--white)', letterSpacing: '-0.02em', lineHeight: 1 }}>
+                GOOD INTERFACES MAKE THINGS EASIER
+              </span>
+              <span style={{ color: 'var(--black)', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>✦</span>
+            </div>
+          ))}
+        </motion.div>
       </div>
+
     </section>
   );
 }
