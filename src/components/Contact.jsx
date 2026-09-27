@@ -5,6 +5,7 @@ const contactItems = [
   { label: 'Email', value: 'shreyashsingh9717@gmail.com', href: 'mailto:shreyashsingh9717@gmail.com' },
   { label: 'GitHub', value: 'github.com/shreyashsingh2005', href: 'https://github.com/shreyashsingh2005' },
   { label: 'LinkedIn', value: 'linkedin.com/in/shreyash-singh', href: 'https://www.linkedin.com/in/shreyash-singh-a1a437345' },
+  { label: 'LeetCode', value: 'leetcode.com/u/shreyashsingh2005', href: 'https://leetcode.com/u/shreyashsingh2005' },
   { label: 'Location', value: 'Ghaziabad, India', href: null },
 ];
 

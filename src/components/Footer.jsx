@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Mail } from 'lucide-react';
+import { Mail, Code2 } from 'lucide-react';
 
 const GithubIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -88,6 +88,7 @@ export default function Footer() {
             {[
               { Icon: GithubIcon, href: 'https://github.com/shreyashsingh2005', label: 'GitHub' },
               { Icon: LinkedinIcon, href: 'https://www.linkedin.com/in/shreyash-singh-a1a437345', label: 'LinkedIn' },
+              { Icon: Code2, href: 'https://leetcode.com/u/shreyashsingh2005', label: 'LeetCode' },
               { Icon: Mail, href: 'mailto:shreyashsingh9717@gmail.com', label: 'Email' },
             ].map(({ Icon, href, label }) => (
               <a key={label} href={href}
