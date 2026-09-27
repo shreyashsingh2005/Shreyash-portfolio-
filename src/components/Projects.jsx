@@ -16,7 +16,7 @@ const projects = [
     tech: ['HTML5', 'CSS3', 'JavaScript'],
     features: ['Live preview', 'DOM manipulation', 'Section editing', 'Export-ready layout'],
     accent: '#2a1000',
-    liveUrl: '#', githubUrl: 'https://github.com/shreyashsingh2005'
+    liveUrl: 'https://resumeforge-pro-gji4.onrender.com/', githubUrl: 'https://github.com/shreyashsingh2005'
   },
   {
     num: '03', name: 'Nexus Meet', category: 'Communication Platform',
