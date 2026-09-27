@@ -24,45 +24,47 @@ export default function Footer() {
       <div className="container" style={{ position: 'relative' }}>
         
         {/* Giant Footer Typography Marquee */}
-        <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', marginBottom: '60px', display: 'flex', width: '200vw' }}>
-          <motion.div 
-            animate={{ x: ["0%", "-100%"] }}
-            transition={{ repeat: Infinity, ease: "linear", duration: 25 }}
-            style={{ display: 'flex', paddingRight: '4vw' }}
-          >
-            {Array(4).fill(0).map((_, i) => (
-              <div key={i} style={{
-                fontFamily: 'var(--font-display)', fontWeight: 900,
-                fontSize: 'clamp(5rem, 15vw, 15rem)',
-                lineHeight: 0.8, textTransform: 'uppercase',
-                WebkitTextStroke: 'clamp(1.5px, 0.3vw, 3px) rgba(255, 255, 255, 0.2)',
-                color: 'transparent',
-                letterSpacing: '-0.02em',
-                paddingRight: '4vw'
-              }}>
-                SHREYASH SINGH ✦
-              </div>
-            ))}
-          </motion.div>
-          <motion.div 
-            animate={{ x: ["0%", "-100%"] }}
-            transition={{ repeat: Infinity, ease: "linear", duration: 25 }}
-            style={{ display: 'flex', paddingRight: '4vw' }}
-          >
-            {Array(4).fill(0).map((_, i) => (
-              <div key={i+4} style={{
-                fontFamily: 'var(--font-display)', fontWeight: 900,
-                fontSize: 'clamp(5rem, 15vw, 15rem)',
-                lineHeight: 0.8, textTransform: 'uppercase',
-                WebkitTextStroke: 'clamp(1.5px, 0.3vw, 3px) rgba(255, 255, 255, 0.2)',
-                color: 'transparent',
-                letterSpacing: '-0.02em',
-                paddingRight: '4vw'
-              }}>
-                SHREYASH SINGH ✦
-              </div>
-            ))}
-          </motion.div>
+        <div style={{ width: '100%', overflow: 'hidden', marginBottom: '60px' }}>
+          <div style={{ whiteSpace: 'nowrap', display: 'flex', width: '200vw' }}>
+            <motion.div 
+              animate={{ x: ["0%", "-100%"] }}
+              transition={{ repeat: Infinity, ease: "linear", duration: 25 }}
+              style={{ display: 'flex', paddingRight: '4vw' }}
+            >
+              {Array(4).fill(0).map((_, i) => (
+                <div key={i} style={{
+                  fontFamily: 'var(--font-display)', fontWeight: 900,
+                  fontSize: 'clamp(4rem, 15vw, 15rem)',
+                  lineHeight: 0.8, textTransform: 'uppercase',
+                  WebkitTextStroke: 'clamp(1.5px, 0.3vw, 3px) rgba(255, 255, 255, 0.2)',
+                  color: 'transparent',
+                  letterSpacing: '-0.02em',
+                  paddingRight: '4vw'
+                }}>
+                  SHREYASH SINGH ✦
+                </div>
+              ))}
+            </motion.div>
+            <motion.div 
+              animate={{ x: ["0%", "-100%"] }}
+              transition={{ repeat: Infinity, ease: "linear", duration: 25 }}
+              style={{ display: 'flex', paddingRight: '4vw' }}
+            >
+              {Array(4).fill(0).map((_, i) => (
+                <div key={i+4} style={{
+                  fontFamily: 'var(--font-display)', fontWeight: 900,
+                  fontSize: 'clamp(4rem, 15vw, 15rem)',
+                  lineHeight: 0.8, textTransform: 'uppercase',
+                  WebkitTextStroke: 'clamp(1.5px, 0.3vw, 3px) rgba(255, 255, 255, 0.2)',
+                  color: 'transparent',
+                  letterSpacing: '-0.02em',
+                  paddingRight: '4vw'
+                }}>
+                  SHREYASH SINGH ✦
+                </div>
+              ))}
+            </motion.div>
+          </div>
         </div>
 
         <div style={{

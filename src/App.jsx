@@ -43,12 +43,12 @@ const Preloader = ({ onComplete }) => {
         willChange: 'transform'
       }}
     >
-      <div style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(4rem, 15vw, 12rem)', fontWeight: 900, lineHeight: 1, letterSpacing: '-0.02em' }}>
+      <div style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 15vw, 12rem)', fontWeight: 900, lineHeight: 1, letterSpacing: '-0.02em' }}>
         {progress}%
       </div>
       <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginTop: '24px' }}>
         <span style={{ width: '40px', height: '2px', background: 'var(--red)' }} />
-        <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', letterSpacing: '0.4em', color: 'var(--red)', textTransform: 'uppercase' }}>
+        <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', letterSpacing: '0.4em', color: 'var(--red)', textTransform: 'uppercase', textAlign: 'center' }}>
           System Initialization
         </span>
       </div>

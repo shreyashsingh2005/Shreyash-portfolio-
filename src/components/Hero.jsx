@@ -274,7 +274,7 @@ export default function Hero() {
                   whileHover={{ y: -20, scale: 1.1, color: 'var(--red)', transition: { type: 'spring', stiffness: 300 } }}
                   style={{
                     fontFamily: 'var(--font-display)', fontWeight: 900,
-                    fontSize: 'clamp(4rem, 11vw, 12rem)',
+                    fontSize: 'clamp(2.5rem, 11vw, 12rem)',
                     lineHeight: 0.86, textTransform: 'uppercase',
                     letterSpacing: '-0.02em', color: 'var(--white)',
                     display: 'inline-block', cursor: 'default'
@@ -287,7 +287,7 @@ export default function Hero() {
                   whileHover={{ y: -20, scale: 1.1, WebkitTextStroke: '2px var(--red)', transition: { type: 'spring', stiffness: 300 } }}
                   style={{
                     fontFamily: 'var(--font-display)', fontWeight: 900,
-                    fontSize: 'clamp(4rem, 11vw, 12rem)',
+                    fontSize: 'clamp(2.5rem, 11vw, 12rem)',
                     lineHeight: 0.86, textTransform: 'uppercase',
                     letterSpacing: '-0.02em',
                     WebkitTextStroke: 'clamp(1.5px, 0.18vw, 2px) rgba(255,255,255,0.8)',
