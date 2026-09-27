@@ -397,18 +397,27 @@ export default function Hero() {
           .dev-visual-term { display: none !important; }
           .dev-visual-wrap { height: 260px; }
         }
+        
+        .hero-scroll-indicator {
+          position: absolute; bottom: 100px; left: 24px;
+          display: flex; flex-direction: column; align-items: center; gap: 16px;
+          z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+          .hero-scroll-indicator {
+            left: 8px;
+            bottom: 40px;
+          }
+        }
       `}</style>
 
       {/* Animated Scroll Indicator */}
       <motion.div 
+        className="hero-scroll-indicator"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
-        style={{
-          position: 'absolute', bottom: '100px', left: '24px',
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px',
-          zIndex: 10
-        }}
       >
         <div style={{ writingMode: 'vertical-rl', fontFamily: 'var(--font-body)', fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.3em', color: 'var(--muted)' }}>
           Scroll
