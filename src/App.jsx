@@ -73,6 +73,8 @@ export default function App() {
           scaleX: scrollYProgress
         }}
       />
+      <div className="ambient-orb-1" />
+      <div className="ambient-orb-2" />
       <div className="bg-grid" />
       <Navbar />
       <main>
