@@ -18,7 +18,7 @@ export default function Contact() {
   });
 
   return (
-    <section id="contact" style={{ padding: '120px 0 110px', borderTop: '1px solid var(--border)', background: 'var(--black-section)' }}>
+    <section id="contact" style={{ padding: '120px 0 110px', borderTop: '1px solid var(--border)' }}>
       <div className="container" ref={ref}>
 
         {/* Giant heading */}

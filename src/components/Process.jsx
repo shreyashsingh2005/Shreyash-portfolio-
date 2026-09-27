@@ -13,7 +13,7 @@ export default function Process() {
   const [ref, visible] = useScrollReveal(0.08);
 
   return (
-    <section style={{ padding: '110px 0', borderTop: '1px solid var(--border)', background: 'var(--black)' }}>
+    <section style={{ padding: '110px 0', borderTop: '1px solid var(--border)' }}>
       <div className="container" ref={ref}>
 
         {/* Header */}

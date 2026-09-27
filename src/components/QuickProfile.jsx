@@ -12,7 +12,7 @@ export default function QuickProfile() {
   ];
 
   return (
-    <section style={{ background: 'var(--black-card)', padding: '100px 0', borderTop: '1px solid var(--border)' }}>
+    <section style={{ padding: '100px 0', borderTop: '1px solid var(--border)' }}>
       <div className="container" ref={ref}>
         <div style={{
           display: 'grid',

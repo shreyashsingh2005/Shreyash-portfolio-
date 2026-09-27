@@ -20,7 +20,7 @@ export default function Skills() {
   const [ref, visible] = useScrollReveal(0.08);
 
   return (
-    <section id="skills" style={{ background: 'var(--black-card)', padding: '110px 0', borderTop: '1px solid var(--border)' }}>
+    <section id="skills" style={{ padding: '110px 0', borderTop: '1px solid var(--border)' }}>
       <div className="container" ref={ref}>
         <div style={{ display: 'grid', gridTemplateColumns: '36% 64%', gap: '70px' }} className="skills-grid">
 

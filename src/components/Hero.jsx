@@ -221,7 +221,7 @@ export default function Hero() {
   const name2 = "SINGH".split('');
 
   return (
-    <section id="home" style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden', paddingTop: '64px', background: 'var(--black)' }}>
+    <section id="home" style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden', paddingTop: '64px' }}>
 
       {/* Ghost background text */}
       <div aria-hidden="true" className="ghost-text-web" style={{

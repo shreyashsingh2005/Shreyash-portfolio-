@@ -12,7 +12,7 @@ export default function Stats() {
   const [ref, visible] = useScrollReveal(0.15);
 
   return (
-    <section style={{ background: 'var(--black-deep)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
+    <section style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
       {/* Red decorative line top */}
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, var(--red) 0%, transparent 60%)' }} />
 

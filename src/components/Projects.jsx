@@ -326,7 +326,7 @@ export default function Projects() {
   });
 
   return (
-    <section id="projects" style={{ padding: '110px 0', borderTop: '1px solid var(--border)', background: 'var(--black)' }}>
+    <section id="projects" style={{ padding: '110px 0', borderTop: '1px solid var(--border)' }}>
       <div className="container" ref={ref}>
 
         {/* Title */}

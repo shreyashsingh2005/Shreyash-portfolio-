@@ -19,7 +19,6 @@ export default function Footer() {
     <footer style={{
       borderTop: '1px solid var(--red)',
       padding: '40px 0',
-      background: 'var(--black)',
     }}>
       <div className="container" style={{ position: 'relative' }}>
         

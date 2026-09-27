@@ -13,7 +13,7 @@ export default function About() {
   const coursework = ['Web Development', 'Database Management', 'Data Structures', 'Software Engineering', 'Programming Fundamentals'];
 
   return (
-    <section id="about" style={{ padding: '110px 0', borderTop: '1px solid var(--border)', background: 'var(--black-section)' }}>
+    <section id="about" style={{ padding: '110px 0', borderTop: '1px solid var(--border)' }}>
       <div className="container" ref={ref}>
         <div style={{ display: 'grid', gridTemplateColumns: '42% 58%', gap: '0' }} className="about-grid">
 

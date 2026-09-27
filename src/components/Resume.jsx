@@ -11,7 +11,7 @@ export default function Resume() {
   });
 
   return (
-    <section id="resume" style={{ padding: '140px 0', borderTop: '1px solid var(--border)', background: 'var(--black-section)' }}>
+    <section id="resume" style={{ padding: '140px 0', borderTop: '1px solid var(--border)' }}>
       <div className="container" ref={ref}>
         
         <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
