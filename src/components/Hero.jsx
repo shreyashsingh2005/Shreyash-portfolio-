@@ -256,7 +256,7 @@ export default function Hero() {
           style={{
             display: 'grid', gap: '48px', alignItems: 'center',
             minHeight: 'calc(100vh - 64px - 36px)',
-            paddingBottom: '60px', paddingTop: '48px',
+            paddingBottom: '140px', paddingTop: '48px',
           }}
         >
 
@@ -405,7 +405,7 @@ export default function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
         style={{
-          position: 'absolute', bottom: '0px', left: '50%', transform: 'translateX(-50%)',
+          position: 'absolute', bottom: '100px', left: '24px',
           display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px',
           zIndex: 10
         }}
