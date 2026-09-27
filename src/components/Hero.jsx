@@ -95,7 +95,7 @@ const DevVisual = () => {
               padding: `3px 10px 3px ${10 + item.depth * 10}px`,
               fontFamily: 'monospace', fontSize: '0.5625rem',
               color: item.active ? '#fff' : '#555',
-              background: item.active ? 'rgba(196,28,28,0.15)' : 'transparent',
+              background: item.active ? 'rgba(255,42,42,0.15)' : 'transparent',
               borderLeft: item.active ? '2px solid var(--red)' : '2px solid transparent',
               whiteSpace: 'nowrap', overflow: 'hidden',
             }}>{item.label}</div>
@@ -243,7 +243,7 @@ export default function Hero() {
       <div className="hero-accent-line" style={{
         position: 'absolute', top: '80px', right: '5%',
         width: '1px', height: '50%',
-        background: 'linear-gradient(to bottom, var(--red) 0%, rgba(196,28,28,0.0) 100%)',
+        background: 'linear-gradient(to bottom, var(--red) 0%, rgba(255,42,42,0.0) 100%)',
         zIndex: 1,
       }} />
 
@@ -299,7 +299,7 @@ export default function Hero() {
             </motion.div>
 
             <motion.div variants={itemVariants} style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '24px 0' }}>
-              <span style={{ width: '8px', height: '8px', background: 'var(--red)', borderRadius: '50%', flexShrink: 0, boxShadow: '0 0 10px rgba(196,28,28,0.5)' }} />
+              <span style={{ width: '8px', height: '8px', background: 'var(--red)', borderRadius: '50%', flexShrink: 0, boxShadow: '0 0 10px rgba(255,42,42,0.5)' }} />
               <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.22em', color: 'var(--muted)', lineHeight: 1.4 }}>Web Developer & Front-End Developer</span>
             </motion.div>
 
@@ -405,7 +405,7 @@ export default function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
         style={{
-          position: 'absolute', bottom: '0px', left: '5%',
+          position: 'absolute', bottom: '0px', left: '50%', transform: 'translateX(-50%)',
           display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px',
           zIndex: 10
         }}

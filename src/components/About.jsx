@@ -111,8 +111,8 @@ export default function About() {
                   <span style={{
                     display: 'inline-block',
                     padding: '5px 14px',
-                    background: 'rgba(196,28,28,0.12)',
-                    border: '1px solid rgba(196,28,28,0.5)',
+                    background: 'rgba(255,42,42,0.12)',
+                    border: '1px solid rgba(255,42,42,0.5)',
                     fontFamily: 'var(--font-body)', fontSize: '0.625rem',
                     textTransform: 'uppercase', letterSpacing: '0.2em',
                     color: 'var(--red)', fontWeight: 600,

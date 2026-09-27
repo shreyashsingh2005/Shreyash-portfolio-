@@ -4,15 +4,15 @@
    ============================================ */
 
 :root {
-  --black: #0a0a0a;
-  --black-card: #121212;
-  --black-deep: #050505;
-  --black-section: #0f0f0f;
-  --red: #c41c1c;
-  --red-bright: #e02020;
-  --red-dark: #8b0000;
-  --red-muted: rgba(196, 28, 28, 0.1);
-  --red-border: rgba(196, 28, 28, 0.3);
+  --black: #000000;
+  --black-card: #0a0a0a;
+  --black-deep: #000000;
+  --black-section: #000000;
+  --red: #ff2a2a;
+  --red-bright: #ff5555;
+  --red-dark: #cc0000;
+  --red-muted: rgba(255, 42, 42, 0.15);
+  --red-border: rgba(255, 42, 42, 0.4);
   --white: #ffffff;
   --off-white: #ececec;
   --muted: #b0b0b0;
@@ -45,6 +45,7 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* ── LENIS SMOOTH SCROLL ── */
@@ -81,7 +82,7 @@ ul, ol { list-style: none; }
   width: 200vw; height: 200vh;
   pointer-events: none;
   z-index: 9997;
-  opacity: 0.04;
+  opacity: 0.02;
   background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
 }
 
@@ -118,19 +119,6 @@ ul, ol { list-style: none; }
   100% { transform: translate(-15vw, -15vh) scale(1.2); }
 }
 
-.bg-grid {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background-size: 60px 60px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  pointer-events: none;
-  mask-image: radial-gradient(circle at center, black 45%, transparent 100%);
-  -webkit-mask-image: radial-gradient(circle at center, black 45%, transparent 100%);
-}
-
 /* ── LAYOUT ── */
 .container {
   width: 100%;
@@ -160,7 +148,7 @@ ul, ol { list-style: none; }
   min-height: 48px; /* touch target */
   white-space: nowrap;
 }
-.btn-red:hover { background: #a01515; transform: scale(1.04) translateY(-2px); box-shadow: 0 12px 30px rgba(196,28,28,0.35); }
+.btn-red:hover { background: var(--red-dark); transform: scale(1.04) translateY(-2px); box-shadow: 0 12px 30px var(--red-border); }
 .btn-red:active { transform: scale(0.97); }
 
 .btn-outline {

@@ -59,11 +59,11 @@ export default function Cursor() {
         <div style={{
           position: 'absolute', top: '-16px', left: '-16px',
           width: '32px', height: '32px', borderRadius: '50%',
-          border: `1px solid ${hovering ? 'rgba(196,28,28,0.8)' : 'rgba(255,255,255,0.2)'}`,
-          background: hovering ? 'rgba(196,28,28,0.1)' : 'transparent',
+          border: `1px solid ${hovering ? 'rgba(255,42,42,0.8)' : 'rgba(255,255,255,0.2)'}`,
+          background: hovering ? 'rgba(255,42,42,0.1)' : 'transparent',
           transform: `scale(${hovering ? 1.5 : (clicked ? 0.8 : 1)})`,
           transition: 'transform 0.4s var(--ease), border-color 0.4s, background 0.4s',
-          boxShadow: hovering ? '0 0 20px rgba(196,28,28,0.3)' : 'none',
+          boxShadow: hovering ? '0 0 20px rgba(255,42,42,0.3)' : 'none',
         }} />
       </div>
 

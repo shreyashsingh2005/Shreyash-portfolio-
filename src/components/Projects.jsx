@@ -91,7 +91,7 @@ const ResumeMockup = () => (
     
     {/* Live Canvas */}
     <div style={{ flex: 1, background: '#1a1a1a', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(196,28,28,0.1) 0%, transparent 70%)' }} />
+      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(255,42,42,0.1) 0%, transparent 70%)' }} />
       
       {/* Paper Document */}
       <div style={{ width: '80%', height: '85%', background: '#fff', borderRadius: '2px', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', padding: '16px', display: 'flex', flexDirection: 'column', position: 'relative', zIndex: 1 }}>
@@ -137,7 +137,7 @@ const NetworkMockup = () => (
         <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(138,212,255,0.2)" strokeWidth="1" strokeDasharray="4 4" />
       ))}
       {[
-        [200,110, 12, 'rgba(196,28,28,0.8)', 'HOST'],
+        [200,110, 12, 'rgba(255,42,42,0.8)', 'HOST'],
         [100,60, 8, 'rgba(138,212,255,0.6)', 'R1'],
         [300,60, 8, 'rgba(138,212,255,0.6)', 'R2'],
         [80,150, 7, 'rgba(138,212,255,0.4)', 'U1'],

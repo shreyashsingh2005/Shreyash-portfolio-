@@ -99,7 +99,7 @@ export default function Resume() {
         }
         .res-down:hover {
           background: var(--red-bright); border-color: var(--red-bright); transform: translateY(-4px);
-          box-shadow: 0 15px 30px rgba(196,28,28,0.25);
+          box-shadow: 0 15px 30px rgba(255,42,42,0.25);
         }
 
         .res-icon {

@@ -62,7 +62,7 @@ export default function Process() {
           <div style={{
             position: 'absolute', top: '22px', bottom: '22px', left: '0',
             width: '1px',
-            background: 'linear-gradient(to bottom, var(--red), rgba(196,28,28,0.1))',
+            background: 'linear-gradient(to bottom, var(--red), rgba(255,42,42,0.1))',
           }} />
 
           {steps.map((step, i) => (
